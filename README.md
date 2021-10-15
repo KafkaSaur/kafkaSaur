@@ -9,13 +9,13 @@
 
 <div align="center">
    
-[![deno version](https://img.shields.io/badge/version-v0.01-green)](https://deno.land/x/kafkasaur@v0.0.1)  
+[![deno version](https://img.shields.io/badge/version-v0.01-green)](https://deno.land/x/kafkasaur@v0.0.2)  
 [![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/oslabs-beta/kafkaSaur)
 <a href="https://github.com/KafkaSaur/kafkaSaur/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/oslabs-beta/kafkaSaur"></a>
 <a href="https://github.com/KafkaSaur/kafkaSaur/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/oslabs-beta/kafkaSaur"></a>
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/KafkaSaur/kafkaSaur">
    
-[![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/kafkasaur@v0.0.1)  [![deno version](https://img.shields.io/badge/deno-^1.3.2-lightgrey?logo=deno)](https://github.com/denoland/deno)    
+[![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/kafkasaur@v0.0.2)  [![deno version](https://img.shields.io/badge/deno-^1.3.2-lightgrey?logo=deno)](https://github.com/denoland/deno)    
    
    <p align="center"> <strong>A native Deno client for Apache Kafka</strong></p>
    </div>
@@ -35,7 +35,7 @@
 ### <a name="getting-started"></a>
 Getting Started
 ```sh
-https://deno.land/x/kafkasaur@v0.0.1/index.ts
+https://deno.land/x/kafkasaur@v0.0.2/index.ts
 ```
 ### Prerequisites
  >Deno - https://deno.land/manual/getting_started/installation
@@ -52,7 +52,7 @@ docker-compose up
 ```
 ```typescript
 //producer example
-import {Kafkasaur} from "https://deno.land/x/kafkasaur@v0.0.1/index.ts"
+import {Kafkasaur} from "https://deno.land/x/kafkasaur@v0.0.2/index.ts"
 
 const kafka = new Kafkasaur({
   clientId: 'example-producer',
@@ -89,7 +89,7 @@ run()
 
 ```typescript
 //consumer example
-import {Kafkasaur} from "https://deno.land/x/kafkasaur@v0.0.1/index.ts"
+import {Kafkasaur} from "https://deno.land/x/kafkasaur@v0.0.2/index.ts"
 
 const kafka = new Kafkasaur({
   clientId: 'example-consumer',
