@@ -1,21 +1,22 @@
 
 <p align="center">
-   <img src="https://github.com/KafkaSaur/kafkaSaur/blob/b8fdcfff957dd1bf9ca13973029e1f7d70165775/static_images/003365-vgrad.png" alt="Logo" >
+   <img src="https://github.com/oslabs-beta/kafkaSaur/blob/b8fdcfff957dd1bf9ca13973029e1f7d70165775/static_images/003365-vgrad.png" alt="Logo" />
     <p align="center">
        <a href="#" >
-         <img src="https://github.com/KafkaSaur/kafkaSaur/blob/b8fdcfff957dd1bf9ca13973029e1f7d70165775/static_images/sirdeno-modified.png" alt="Logo" >
+         <img src="https://github.com/oslabs-beta/kafkaSaur/blob/b8fdcfff957dd1bf9ca13973029e1f7d70165775/static_images/sirdeno-modified.png" alt="Logo" />
   </p> 
 </p> 
 
 <div align="center">
- <a href=‘https://deno.land/x/kafkasaur@v0.0.3’><img src=‘https://img.shields.io/badge/version-v0.01-green’ /> 
- 
-[![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/KafkaSaur/kafkaSaur)
-<a href="https://github.com/KafkaSaur/kafkaSaur/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/KafkaSaur/kafkaSaur"></a>
-<a href="https://github.com/KafkaSaur/kafkaSaur/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/KafkaSaur/kafkaSaur"></a>
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/KafkaSaur/kafkaSaur" />
    
-[![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/kafkasaur@v0.0.2)  [![deno version](https://img.shields.io/badge/deno-^1.3.2-lightgrey?logo=deno)](https://github.com/denoland/deno)    
+<a href=‘https://deno.land/x/kafkasaur@v0.0.3’><img src=‘https://img.shields.io/badge/version-v0.01-green’ /></a> 
+<a href="https://github.com/oslabs-beta/kafkaSaur"><img src="https://img.shields.io/badge/license-MIT-blue"/></a>
+<a href="https://github.com/oslabs-beta/kafkaSaur/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/oslabs-beta/kafkaSaur"></a>
+<a href="https://github.com/oslabs-beta/kafkaSaur/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/oslabs-beta/kafkaSaur"></a>
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/oslabs-beta/kafkaSaur">
+
+<a href="https://deno.land/x/kafkasaur@v0.0.3"><img src="http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black" /></a>
+<a href="https://github.com/denoland/deno"><img src="https://img.shields.io/badge/deno-^1.3.2-lightgrey?logo=deno"/></a>
    
    <p align="center"> <strong>A native Deno client for Apache Kafka</strong></p>
    </div>
@@ -35,7 +36,7 @@
 ### <a name="getting-started"></a>
 Getting Started
 ```sh
-https://deno.land/x/kafkasaur@v0.0.2/index.ts
+https://deno.land/x/kafkasaur@v0.0.3
 ```
 ### Prerequisites
  >Deno - https://deno.land/manual/getting_started/installation
@@ -47,12 +48,22 @@ https://deno.land/x/kafkasaur@v0.0.2/index.ts
 
 
 #### <a name="usage"></a> Usage
+To run examples initiate Docker containers included in yaml file:
 ```sh
 docker-compose up
 ```
+Then run example producer/consumer files, in seperate terminals, with the following commands:
+```sh
+deno run --allow-all --unstable examples/example_producer.ts
+deno run --allow-all --unstable examples/example_consumer.ts
+
+```
+Your two terminals (one Consuming, and one Producing) will now interact with the Broker and begin consuming and producing respectively.
+
+With the Client imported into your application, you can write the producer/consumer logic like this:
 ```typescript
 //producer example
-import {Kafkasaur} from "https://deno.land/x/kafkasaur@v0.0.2/index.ts"
+import {Kafkasaur} from "https://deno.land/x/kafkasaur/index.ts"
 
 const kafka = new Kafkasaur({
   clientId: 'example-producer',
@@ -89,7 +100,7 @@ run()
 
 ```typescript
 //consumer example
-import {Kafkasaur} from "https://deno.land/x/kafkasaur@v0.0.2/index.ts"
+import {Kafkasaur} from "https://deno.land/x/kafkasaur/index.ts"
 
 const kafka = new Kafkasaur({
   clientId: 'example-consumer',
@@ -113,6 +124,16 @@ const run = async () => {
 
 run()
 ```
+
+To run the instances of your Consumer/Producer be sure to pass the flags 
+```sh
+--allow-all
+```
+and
+```sh
+--unstable
+```
+when issuing your deno run command. This ensures that Deno as the proper configuration to communicate with the Broker, and to log any errors.
 ## Features
 
 - 🛠 Built with [TypeScript][Deno]
