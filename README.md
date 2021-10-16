@@ -1,9 +1,9 @@
 
 <p align="center">
-  <a href=""><img src="https://i.ibb.co/GpxPQFD/kafkasaur.png" alt="kafkasaur" border="0"></a>
+  <a href="#"><img src="https://i.ibb.co/GpxPQFD/kafkasaur.png" alt="kafkasaur" border="0"></a>
    
    <p align="center">
-       <a href=""><img src="https://i.ibb.co/FhDxTHK/kafka-Saur-Circle.png" alt="kafka-Saur-Circle" border="0" /></a>
+       <a href="#"><img src="https://i.ibb.co/FhDxTHK/kafka-Saur-Circle.png" alt="kafka-Saur-Circle" border="0" /></a>
 
   </p> 
 </p> 
