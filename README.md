@@ -4,7 +4,8 @@
    
    <p align="center">
        <a href="#" >
-         <img src="https://github.com/KafkaSaur/kafkaSaur/blob/fa25b2c61eb71a134cb3a3de1ef365dc5c9db8ad/static_images/sirdeno-modified.png"                    alt="Logo" /></a>
+         <img src="https://github.com/KafkaSaur/kafkaSaur/blob/fa25b2c61eb71a134cb3a3de1ef365dc5c9db8ad/static_images/sirdeno-modified.png"                    alt="Logo" />
+      </a>
   </p> 
 </p> 
 
