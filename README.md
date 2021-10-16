@@ -10,13 +10,13 @@
 
 <div align="center">
    
-<a href=‘https://deno.land/x/kafkasaur@v0.0.3’><img src=‘https://img.shields.io/badge/version-v0.01-green’ /></a> 
+<a href=‘https://deno.land/x/kafkasaur@v0.0.4’><img src=‘https://img.shields.io/badge/version-v0.01-green’ /></a> 
 <a href="https://github.com/oslabs-beta/kafkaSaur"><img src="https://img.shields.io/badge/license-MIT-blue"/></a>
 <a href="https://github.com/oslabs-beta/kafkaSaur/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/oslabs-beta/kafkaSaur"></a>
 <a href="https://github.com/oslabs-beta/kafkaSaur/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/oslabs-beta/kafkaSaur"></a>
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/oslabs-beta/kafkaSaur">
 
-<a href="https://deno.land/x/kafkasaur@v0.0.3"><img src="http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black" /></a>
+<a href="https://deno.land/x/kafkasaur@v0.0.4"><img src="http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black" /></a>
 <a href="https://github.com/denoland/deno"><img src="https://img.shields.io/badge/deno-^1.3.2-lightgrey?logo=deno"/></a>
    
    <p align="center"> <strong>A native Deno client for Apache Kafka</strong></p>
@@ -37,7 +37,7 @@
 ### <a name="getting-started"></a>
 Getting Started
 ```sh
-https://deno.land/x/kafkasaur@v0.0.3
+https://deno.land/x/kafkasaur@v0.0.4
 ```
 ### Prerequisites
  >Deno - https://deno.land/manual/getting_started/installation
