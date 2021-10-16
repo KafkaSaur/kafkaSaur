@@ -1,6 +1,6 @@
 
 <p align="center">
-   <img src="https://github.com/oslabs-beta/kafkaSaur/blob/b8fdcfff957dd1bf9ca13973029e1f7d70165775/static_images/003365-vgrad.png" alt="Logo" />
+  <a href="https://imgbb.com/"><img src="https://i.ibb.co/GpxPQFD/kafkasaur.png" alt="kafkasaur" border="0"></a>
    
    <p align="center">
        <a href="https://imgbb.com/"><img src="https://i.ibb.co/FhDxTHK/kafka-Saur-Circle.png" alt="kafka-Saur-Circle" border="0" /></a>
