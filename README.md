@@ -2,7 +2,7 @@
 <p align="center">
    <img src="https://github.com/oslabs-beta/kafkaSaur/blob/b8fdcfff957dd1bf9ca13973029e1f7d70165775/static_images/003365-vgrad.png" alt="Logo" />
    
-    <p align="center">
+   <p align="center">
        <a href="#" >
          <img src="https://github.com/KafkaSaur/kafkaSaur/blob/fa25b2c61eb71a134cb3a3de1ef365dc5c9db8ad/static_images/sirdeno-modified.png"                    alt="Logo" /></a>
   </p> 
