@@ -3,9 +3,8 @@
    <img src="https://github.com/oslabs-beta/kafkaSaur/blob/b8fdcfff957dd1bf9ca13973029e1f7d70165775/static_images/003365-vgrad.png" alt="Logo" />
    
    <p align="center">
-       <a href="#" >
-         <img src="https://github.com/KafkaSaur/kafkaSaur/blob/fa25b2c61eb71a134cb3a3de1ef365dc5c9db8ad/static_images/sirdeno-modified.png"                    alt="Logo" />
-      </a>
+       <a href="https://imgbb.com/"><img src="https://i.ibb.co/FhDxTHK/kafka-Saur-Circle.png" alt="kafka-Saur-Circle" border="0" /></a>
+
   </p> 
 </p> 
 
