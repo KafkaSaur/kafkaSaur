@@ -11,7 +11,7 @@ import OffsetCommit from './offsetCommit/index.ts';
 import OffsetFetch from './offsetFetch/index.ts';
 import JoinGroup from './joinGroup/index.ts';
 import Heartbeat from './heartbeat/index.ts';
-import LeaveGroup from './LeaveGroup/index.ts';
+import LeaveGroup from './leaveGroup/index.ts';
 import SyncGroup from './syncGroup/index.ts';
 import DescribeGroups from './listGroups/index.ts';
 import ListGroups from './listGroups/index.ts';
