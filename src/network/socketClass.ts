@@ -2,12 +2,14 @@ import { EventEmitter } from "https://deno.land/std@0.110.0/node/events.ts";
 import { Buffer } from "https://deno.land/std@0.110.0/node/buffer.ts";
 import { iter } from "https://deno.land/std@0.110.0/io/util.ts";
 
+interface SslOptions {
+  certFile: string;
+}
+
 export class CustomSocket extends EventEmitter {
   conn?: Deno.Conn;
   isOpen = false;
-  //TODO - options should be typed as Deno.ConnectOptions, but need to refactor ssl
-  //deno-lint-ignore no-explicit-any
-  options: any;
+  options: Deno.ConnectOptions & { ssl?: SslOptions };
 
   constructor(options?: any) {
     super();
@@ -15,7 +17,7 @@ export class CustomSocket extends EventEmitter {
       hostname: options?.hostname || "localhost",
       port: options?.port || 9899,
       transport: options?.transport || "tcp",
-      ssl: options?.ssl || null,
+      ssl: options?.ssl,
     };
   }
 
