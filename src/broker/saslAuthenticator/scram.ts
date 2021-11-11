@@ -1,18 +1,21 @@
 /** @format */
 
 import scram from "../../protocol/sasl/scram/index.ts";
-import { Buffer } from "https://deno.land/std@0.110.0/node/buffer.ts";
+import { Buffer } from "https://deno.land/std@0.114.0/node/buffer.ts";
 import randomBytes from "https://deno.land/std@0.114.0/node/_crypto/randomBytes.ts";
 import { pbkdf2 } from "https://deno.land/std@0.114.0/node/_crypto/pbkdf2.ts";
 import { createHash } from "https://deno.land/std@0.114.0/node/crypto.ts";
 import { HmacSha256 } from "https://deno.land/std@0.114.0/hash/sha256.ts";
-import { HmacSha512 } from "https://deno.land/std@0.114.0/hash/sha512.ts";
+import {
+  HmacSha512,
+  Message,
+} from "https://deno.land/std@0.114.0/hash/sha512.ts";
 
 import {
   KafkaJSNonRetriableError,
-  KafkaJSNotImplemented,
   KafkaJSSASLAuthenticationError,
 } from "../../errors.ts";
+import { HASH_DATA } from "https://deno.land/std@0.114.0/node/_crypto/types.ts";
 
 const GS2_HEADER = "n,,";
 
@@ -26,15 +29,26 @@ const URLSAFE_BASE64_TRAILING_EQUAL_REGEX = /=+$/;
 const HMAC_CLIENT_KEY = "Client Key";
 const HMAC_SERVER_KEY = "Server Key";
 
-const DIGESTS = {
+enum DigestType {
+  SHA512 = "sha512",
+  SHA256 = "sha256",
+}
+
+interface DigestDefinition {
+  length: number;
+  type: DigestType;
+  minIterations: number;
+}
+
+const DIGESTS: Record<string, DigestDefinition> = {
   SHA256: {
     length: 32,
-    type: "sha256",
+    type: DigestType.SHA256,
     minIterations: 4096,
   },
   SHA512: {
     length: 64,
-    type: "sha512",
+    type: DigestType.SHA512,
     minIterations: 4096,
   },
 };
@@ -45,7 +59,7 @@ class SCRAM {
   PREFIX: any;
   connection: any;
   currentNonce: any;
-  digestDefinition: any;
+  digestDefinition: DigestDefinition;
   logger: any;
   saslAuthenticate: any;
   /**
@@ -88,8 +102,13 @@ class SCRAM {
    *
    * @returns {Promise<Buffer>}
    */
-  static hi(password: any, salt: any, iterations: any, digestDefinition: any) {
-    return new Promise((resolve: any, reject: any) => {
+  static hi(
+    password: HASH_DATA,
+    salt: HASH_DATA,
+    iterations: number,
+    digestDefinition: DigestDefinition,
+  ) {
+    return new Promise<Buffer | undefined>((resolve, reject) => {
       pbkdf2(
         password,
         salt,
@@ -97,8 +116,8 @@ class SCRAM {
         digestDefinition.length,
         digestDefinition.type,
         (
-          err: any,
-          derivedKey: any,
+          err,
+          derivedKey,
         ) => (err ? reject(err) : resolve(derivedKey)),
       );
     });
@@ -139,7 +158,7 @@ class SCRAM {
     connection: any,
     logger: any,
     saslAuthenticate: any,
-    digestDefinition: any,
+    digestDefinition: DigestDefinition,
   ) {
     this.connection = connection;
     this.logger = logger;
@@ -251,6 +270,8 @@ class SCRAM {
    */
   async clientProof(clientMessageResponse: any) {
     const clientKey = await this.clientKey(clientMessageResponse);
+    if (!clientKey) return;
+
     const storedKey = this.H(clientKey);
     const clientSignature = this.clientSignature(
       storedKey,
@@ -264,7 +285,7 @@ class SCRAM {
    */
   async clientKey(clientMessageResponse: any) {
     const saltedPassword = await this.saltPassword(clientMessageResponse);
-    return this.HMAC(saltedPassword, HMAC_CLIENT_KEY);
+    return saltedPassword && this.HMAC(saltedPassword, HMAC_CLIENT_KEY);
   }
 
   /**
@@ -272,7 +293,7 @@ class SCRAM {
    */
   async serverKey(clientMessageResponse: any) {
     const saltedPassword = await this.saltPassword(clientMessageResponse);
-    return this.HMAC(saltedPassword, HMAC_SERVER_KEY);
+    return saltedPassword && this.HMAC(saltedPassword, HMAC_SERVER_KEY);
   }
 
   /**
@@ -350,7 +371,7 @@ class SCRAM {
   /**
    * @private
    */
-  H(data: any) {
+  H(data: string | ArrayBuffer) {
     return createHash(this.digestDefinition.type)
       .update(data)
       .digest();
@@ -359,16 +380,12 @@ class SCRAM {
   /**
    * @private
    */
-  HMAC(key: any, data: any) {
+  HMAC(key: Message, data: Message) {
     switch (this.digestDefinition.type) {
-      case DIGESTS.SHA512.type:
+      case DigestType.SHA512:
         return new HmacSha512(key).update(data).arrayBuffer();
-      case DIGESTS.SHA256.type:
+      case DigestType.SHA256:
         return new HmacSha256(key).update(data).arrayBuffer();
-      default:
-        throw new KafkaJSNotImplemented(
-          `${this.digestDefinition.type} is currently not supported`,
-        );
     }
   }
 }
