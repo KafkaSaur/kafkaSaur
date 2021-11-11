@@ -1,13 +1,23 @@
 /** @format */
 
-import scram from '../../protocol/sasl/scram/index.ts';
-import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+import scram from "../../protocol/sasl/scram/index.ts";
+import { Buffer } from "https://deno.land/std@0.114.0/node/buffer.ts";
+import randomBytes from "https://deno.land/std@0.114.0/node/_crypto/randomBytes.ts";
+import { pbkdf2 } from "https://deno.land/std@0.114.0/node/_crypto/pbkdf2.ts";
+import { createHash } from "https://deno.land/std@0.114.0/node/crypto.ts";
+import { HmacSha256 } from "https://deno.land/std@0.114.0/hash/sha256.ts";
 import {
-  KafkaJSSASLAuthenticationError,
-  KafkaJSNonRetriableError,
-} from '../../errors.ts';
+  HmacSha512,
+  Message,
+} from "https://deno.land/std@0.114.0/hash/sha512.ts";
 
-const GS2_HEADER = 'n,,';
+import {
+  KafkaJSNonRetriableError,
+  KafkaJSSASLAuthenticationError,
+} from "../../errors.ts";
+import { HASH_DATA } from "https://deno.land/std@0.114.0/node/_crypto/types.ts";
+
+const GS2_HEADER = "n,,";
 
 const EQUAL_SIGN_REGEX = /=/g;
 const COMMA_SIGN_REGEX = /,/g;
@@ -16,29 +26,40 @@ const URLSAFE_BASE64_PLUS_REGEX = /\+/g;
 const URLSAFE_BASE64_SLASH_REGEX = /\//g;
 const URLSAFE_BASE64_TRAILING_EQUAL_REGEX = /=+$/;
 
-const HMAC_CLIENT_KEY = 'Client Key';
-const HMAC_SERVER_KEY = 'Server Key';
+const HMAC_CLIENT_KEY = "Client Key";
+const HMAC_SERVER_KEY = "Server Key";
 
-const DIGESTS = {
+enum DigestType {
+  SHA512 = "sha512",
+  SHA256 = "sha256",
+}
+
+interface DigestDefinition {
+  length: number;
+  type: DigestType;
+  minIterations: number;
+}
+
+const DIGESTS: Record<string, DigestDefinition> = {
   SHA256: {
     length: 32,
-    type: 'sha256',
+    type: DigestType.SHA256,
     minIterations: 4096,
   },
   SHA512: {
     length: 64,
-    type: 'sha512',
+    type: DigestType.SHA512,
     minIterations: 4096,
   },
 };
 
-const encode64 = (str: any) => Buffer.from(str).toString('base64');
+const encode64 = (str: any) => Buffer.from(str).toString("base64");
 
 class SCRAM {
   PREFIX: any;
   connection: any;
   currentNonce: any;
-  digestDefinition: any;
+  digestDefinition: DigestDefinition;
   logger: any;
   saslAuthenticate: any;
   /**
@@ -53,8 +74,8 @@ class SCRAM {
    */
   static sanitizeString(str: any) {
     return str
-      .replace(EQUAL_SIGN_REGEX, '=3D')
-      .replace(COMMA_SIGN_REGEX, '=2C');
+      .replace(EQUAL_SIGN_REGEX, "=3D")
+      .replace(COMMA_SIGN_REGEX, "=2C");
   }
 
   /**
@@ -66,13 +87,12 @@ class SCRAM {
    * @returns {String}
    */
   static nonce() {
-    return (crypto as any)
-      .randomBytes(16)
-      .toString('base64')
-      .replace(URLSAFE_BASE64_PLUS_REGEX, '-') // make it url safe
-      .replace(URLSAFE_BASE64_SLASH_REGEX, '_')
-      .replace(URLSAFE_BASE64_TRAILING_EQUAL_REGEX, '')
-      .toString('ascii');
+    return randomBytes(16)
+      .toString("base64")
+      .replace(URLSAFE_BASE64_PLUS_REGEX, "-") // make it url safe
+      .replace(URLSAFE_BASE64_SLASH_REGEX, "_")
+      .replace(URLSAFE_BASE64_TRAILING_EQUAL_REGEX, "")
+      .toString();
   }
 
   /**
@@ -82,15 +102,23 @@ class SCRAM {
    *
    * @returns {Promise<Buffer>}
    */
-  static hi(password: any, salt: any, iterations: any, digestDefinition: any) {
-    return new Promise((resolve: any, reject: any) => {
-      (crypto as any).pbkdf2(
+  static hi(
+    password: HASH_DATA,
+    salt: HASH_DATA,
+    iterations: number,
+    digestDefinition: DigestDefinition,
+  ) {
+    return new Promise<Buffer | undefined>((resolve, reject) => {
+      pbkdf2(
         password,
         salt,
         iterations,
         digestDefinition.length,
         digestDefinition.type,
-        (err: any, derivedKey: any) => (err ? reject(err) : resolve(derivedKey))
+        (
+          err,
+          derivedKey,
+        ) => (err ? reject(err) : resolve(derivedKey)),
       );
     });
   }
@@ -109,7 +137,7 @@ class SCRAM {
     const length = Buffer.byteLength(bufferA);
 
     if (length !== Buffer.byteLength(bufferB)) {
-      throw new KafkaJSNonRetriableError('Buffers must be of the same length');
+      throw new KafkaJSNonRetriableError("Buffers must be of the same length");
     }
 
     const result = [];
@@ -130,7 +158,7 @@ class SCRAM {
     connection: any,
     logger: any,
     saslAuthenticate: any,
-    digestDefinition: any
+    digestDefinition: DigestDefinition,
   ) {
     this.connection = connection;
     this.logger = logger;
@@ -150,17 +178,17 @@ class SCRAM {
 
     if (sasl.username == null || sasl.password == null) {
       throw new KafkaJSSASLAuthenticationError(
-        `${this.PREFIX}: Invalid username or password`
+        `${this.PREFIX}: Invalid username or password`,
       );
     }
 
     try {
-      this.logger.debug('Exchanging first client message', { broker });
+      this.logger.debug("Exchanging first client message", { broker });
       const clientMessageResponse = await this.sendClientFirstMessage();
 
-      this.logger.debug('Sending final message', { broker });
+      this.logger.debug("Sending final message", { broker });
       const finalResponse = await this.sendClientFinalMessage(
-        clientMessageResponse
+        clientMessageResponse,
       );
 
       if (finalResponse.e) {
@@ -170,17 +198,17 @@ class SCRAM {
       const serverKey = await this.serverKey(clientMessageResponse);
       const serverSignature = this.serverSignature(
         serverKey,
-        clientMessageResponse
+        clientMessageResponse,
       );
 
       if (finalResponse.v !== serverSignature) {
-        throw new Error('Invalid server signature in server final message');
+        throw new Error("Invalid server signature in server final message");
       }
 
       this.logger.debug(`${PREFIX} successful`, { broker });
     } catch (e) {
       const error = new KafkaJSSASLAuthenticationError(
-        `${PREFIX} failed: ${e.message}`
+        `${PREFIX} failed: ${e.message}`,
       );
       this.logger.error(error.message, { broker });
       throw error;
@@ -212,23 +240,23 @@ class SCRAM {
 
     if (!clientMessageResponse.r.startsWith(this.currentNonce)) {
       throw new KafkaJSSASLAuthenticationError(
-        `${PREFIX} failed: Invalid server nonce, it does not start with the client nonce`
+        `${PREFIX} failed: Invalid server nonce, it does not start with the client nonce`,
       );
     }
 
     if (iterations < minIterations) {
       throw new KafkaJSSASLAuthenticationError(
-        `${PREFIX} failed: Requested iterations ${iterations} is less than the minimum ${minIterations}`
+        `${PREFIX} failed: Requested iterations ${iterations} is less than the minimum ${minIterations}`,
       );
     }
 
     const finalMessageWithoutProof = this.finalMessageWithoutProof(
-      clientMessageResponse
+      clientMessageResponse,
     );
     const clientProof = await this.clientProof(clientMessageResponse);
     const finalMessage = `${finalMessageWithoutProof},p=${clientProof}`;
     const request = scram.finalMessage.request({ finalMessage });
-    const response = scram.finalMessage.response;
+    const response = scram.finalMessage.response.finalMessageResponse;
 
     return this.saslAuthenticate({
       authExpectResponse: true,
@@ -242,10 +270,12 @@ class SCRAM {
    */
   async clientProof(clientMessageResponse: any) {
     const clientKey = await this.clientKey(clientMessageResponse);
+    if (!clientKey) return;
+
     const storedKey = this.H(clientKey);
     const clientSignature = this.clientSignature(
       storedKey,
-      clientMessageResponse
+      clientMessageResponse,
     );
     return encode64(SCRAM.xor(clientKey, clientSignature));
   }
@@ -255,7 +285,7 @@ class SCRAM {
    */
   async clientKey(clientMessageResponse: any) {
     const saltedPassword = await this.saltPassword(clientMessageResponse);
-    return this.HMAC(saltedPassword, HMAC_CLIENT_KEY);
+    return saltedPassword && this.HMAC(saltedPassword, HMAC_CLIENT_KEY);
   }
 
   /**
@@ -263,7 +293,7 @@ class SCRAM {
    */
   async serverKey(clientMessageResponse: any) {
     const saltedPassword = await this.saltPassword(clientMessageResponse);
-    return this.HMAC(saltedPassword, HMAC_SERVER_KEY);
+    return saltedPassword && this.HMAC(saltedPassword, HMAC_SERVER_KEY);
   }
 
   /**
@@ -278,7 +308,7 @@ class SCRAM {
    */
   serverSignature(serverKey: any, clientMessageResponse: any) {
     return encode64(
-      this.HMAC(serverKey, this.authMessage(clientMessageResponse))
+      this.HMAC(serverKey, this.authMessage(clientMessageResponse)),
     );
   }
 
@@ -290,20 +320,20 @@ class SCRAM {
       this.firstMessageBare(),
       clientMessageResponse.original,
       this.finalMessageWithoutProof(clientMessageResponse),
-    ].join(',');
+    ].join(",");
   }
 
   /**
    * @private
    */
   async saltPassword(clientMessageResponse: any) {
-    const salt = Buffer.from(clientMessageResponse.s, 'base64');
+    const salt = Buffer.from(clientMessageResponse.s, "base64");
     const iterations = parseInt(clientMessageResponse.i, 10);
     return SCRAM.hi(
       this.encodedPassword(),
       salt,
       iterations,
-      this.digestDefinition
+      this.digestDefinition,
     );
   }
 
@@ -327,7 +357,7 @@ class SCRAM {
    */
   encodedUsername() {
     const { username } = this.connection.sasl;
-    return SCRAM.sanitizeString(username).toString('utf-8');
+    return SCRAM.sanitizeString(username).toString("utf-8");
   }
 
   /**
@@ -335,15 +365,14 @@ class SCRAM {
    */
   encodedPassword() {
     const { password } = this.connection.sasl;
-    return password.toString('utf-8');
+    return password.toString("utf-8");
   }
 
   /**
    * @private
    */
-  H(data: any) {
-    return (crypto as any)
-      .createHash(this.digestDefinition.type)
+  H(data: string | ArrayBuffer) {
+    return createHash(this.digestDefinition.type)
       .update(data)
       .digest();
   }
@@ -351,11 +380,13 @@ class SCRAM {
   /**
    * @private
    */
-  HMAC(key: any, data: any) {
-    return (crypto as any)
-      .createHmac(this.digestDefinition.type, key)
-      .update(data)
-      .digest();
+  HMAC(key: Message, data: Message) {
+    switch (this.digestDefinition.type) {
+      case DigestType.SHA512:
+        return new HmacSha512(key).update(data).arrayBuffer();
+      case DigestType.SHA256:
+        return new HmacSha256(key).update(data).arrayBuffer();
+    }
   }
 }
 

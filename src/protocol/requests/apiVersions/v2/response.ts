@@ -1,6 +1,7 @@
 /** @format */
 
-import response from "../v1/response.ts";
+
+import responseV1 from "../v1/response.ts";
 
 /**
  * Starting in version 2, on quota violation, brokers send out responses before throttling.
@@ -14,8 +15,9 @@ import response from "../v1/response.ts";
  *     max_version => INT16
  *   throttle_time_ms => INT32
  */
-const parse: any = response.parse;
-const decodeV1: any = response.decode;
+
+const { parse, decode: decodeV1 } = responseV1;
+
 const decode = async (rawData: any) => {
   const decoded = await decodeV1(rawData);
 
