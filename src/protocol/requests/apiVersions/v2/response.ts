@@ -1,5 +1,6 @@
 /** @format */
 
+
 import responseV1 from "../v1/response.ts";
 
 /**
@@ -14,7 +15,9 @@ import responseV1 from "../v1/response.ts";
  *     max_version => INT16
  *   throttle_time_ms => INT32
  */
+
 const { parse, decode: decodeV1 } = responseV1;
+
 const decode = async (rawData: any) => {
   const decoded = await decodeV1(rawData);
 
