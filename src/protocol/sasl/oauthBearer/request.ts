@@ -31,7 +31,7 @@
  */
 
 import { Encoder } from '../../encoder.ts';
-import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+import { Buffer } from 'https://deno.land/std@0.177.0/node/buffer.ts';
 
 const SEPARATOR = '\u0001'; // SOH - Start Of Header ASCII
 

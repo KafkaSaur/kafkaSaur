@@ -1,7 +1,7 @@
 /** @format */
 
 //import randomBytes from './randomBytes.ts'
-import crypto from 'https://deno.land/std@0.110.0/node/crypto.ts';
+import crypto from 'https://deno.land/std@0.177.0/node/crypto.ts';
 // Based on the java client 0.10.2
 // https://github.com/apache/kafka/blob/0.10.2/clients/src/main/java/org/apache/kafka/clients/producer/internals/DefaultPartitioner.java
 

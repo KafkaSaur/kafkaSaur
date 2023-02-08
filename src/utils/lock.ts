@@ -1,6 +1,6 @@
 /** @format */
 
-import { format } from 'https://deno.land/std@0.110.0/node/util.ts';
+import { format } from 'https://deno.land/std@0.177.0/node/util.ts';
 import { KafkaJSLockTimeout } from '../errors.ts';
 
 const PRIVATE = {

@@ -2,7 +2,7 @@
 
 
 // <reference types="node" />
-import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+import { Buffer } from "https://deno.land/std@0.177.0/node/buffer.ts";
 import Connection from './src/network/connection.ts'
 
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };

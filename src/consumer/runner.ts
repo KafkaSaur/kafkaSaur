@@ -1,7 +1,7 @@
 //deno-lint-ignore-file no-explicit-any require-await
 
 /** @format */
-import { EventEmitter } from 'https://deno.land/std@0.110.0/node/events.ts';
+import { EventEmitter } from 'https://deno.land/std@0.177.0/node/events.ts';
 import Long from '../utils/long.ts';
 import createRetry from '../retry/index.ts';
 import limitConcurrency from '../utils/concurrency.ts';

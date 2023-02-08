@@ -2,7 +2,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import Long from '../utils/long.ts';
-import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+import { Buffer } from 'https://deno.land/std@0.177.0/node/buffer.ts';
 const INT8_SIZE = 1;
 const INT16_SIZE = 2;
 const INT32_SIZE = 4;

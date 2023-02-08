@@ -1,6 +1,6 @@
 /** @format */
 
-import { EventEmitter } from 'https://deno.land/std@0.110.0/node/events.ts';
+import { EventEmitter } from 'https://deno.land/std@0.177.0/node/events.ts';
 
 import { KafkaJSNonRetriableError } from '../../errors.ts';
 import STATES from './transactionStates.ts';

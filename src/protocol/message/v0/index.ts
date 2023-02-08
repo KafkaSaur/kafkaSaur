@@ -3,7 +3,7 @@
 import { Encoder } from '../../encoder.ts';
 import crc32 from '../../crc32.ts';
 import compression from '../compression/index.ts';
-import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+import { Buffer } from 'https://deno.land/std@0.177.0/node/buffer.ts';
 
 const {Types} = compression
 const {COMPRESSION_CODEC_MASK} = compression
