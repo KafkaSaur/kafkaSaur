@@ -4,7 +4,7 @@
 //   assertEquals,
 //   assertExists,
 //   assertObjectMatch,
-// } from 'https://deno.land/std@0.110.0/testing/asserts.ts';
+// } from 'https://deno.land/std@0.177.0/testing/asserts.ts';
 
 // import {
 //   afterEach,
@@ -20,7 +20,7 @@
 //   BenchmarkRunProgress,
 //   ProgressState,
 //   runBenchmarks,
-// } from 'https://deno.land/std@0.110.0/testing/bench.ts';
+// } from 'https://deno.land/std@0.177.0/testing/bench.ts';
 
 // import { Kafka as Client, logLevel } from '../index.ts';
 // import createProducer from '../src/producer/index.ts';
@@ -28,7 +28,7 @@
 // import createAdmin from '../src/admin/index.ts';
 // import { Cluster } from '../src/cluster/index.ts';
 // import ISOLATION_LEVEL from '../src/protocol/isolationLevel.ts';
-// import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+// import { Buffer } from 'https://deno.land/std@0.177.0/node/buffer.ts';
 // import { spy, Spy } from 'https://deno.land/x/mock@0.10.1/mod.ts';
 // import { assertSpyCall } from 'https://deno.land/x/mock@0.10.1/asserts.ts';
 

@@ -7,7 +7,7 @@ import {
 import V0Decoder from './v0/decoder.ts';
 import V1Decoder from './v1/decoder.ts';
 import { Decoder } from '../decoder.ts';
-import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+import { Buffer } from 'https://deno.land/std@0.177.0/node/buffer.ts';
 
 const decodeMessage = (decoder: Decoder, magicByte: number) => {
   switch (magicByte) {

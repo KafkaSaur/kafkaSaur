@@ -1,4 +1,4 @@
-import {Buffer} from 'https://deno.land/std@0.110.0/node/buffer.ts'
+import {Buffer} from 'https://deno.land/std@0.177.0/node/buffer.ts'
 import _decode from '../v1/response.ts'
 const decodeV1 = _decode.decode
 const parse = _decode.parse

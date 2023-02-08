@@ -15,12 +15,12 @@
 // import { v4 } from 'https://deno.land/std@0.111.0/uuid/mod.ts';
 // //import semver from 'semver' - replaced w deno version of same package below
 // import * as semver from 'https://deno.land/x/semver/mod.ts';
-// import crypto from 'https://deno.land/std@0.110.0/node/crypto.ts';
-// import process from 'https://deno.land/std@0.110.0/node/process.ts';
+// import crypto from 'https://deno.land/std@0.177.0/node/crypto.ts';
+// import process from 'https://deno.land/std@0.177.0/node/process.ts';
 
 // //import jwt from 'jsonwebtoken' - replaced with 3rd part djwt, modified below usage slightly
 // import { create } from 'https://deno.land/x/djwt@v2.4/mod.ts';
-// import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+// import { Buffer } from 'https://deno.land/std@0.177.0/node/buffer.ts';
 // //END NEED DENO REPLACEMENTS
 
 // import { Cluster } from '../src/cluster/index.ts';
