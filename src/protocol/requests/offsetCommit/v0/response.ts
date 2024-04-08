@@ -3,7 +3,7 @@
 import { Decoder } from '../../../decoder.ts';
 import { failure, createErrorFromCode } from '../../../error.ts';
 import flatten from '../../../../utils/flatten.ts';
-import { Buffer } from 'https://deno.land/std@0.110.0/node/buffer.ts';
+import { Buffer } from 'https://deno.land/std@0.177.0/node/buffer.ts';
 
 /**
  * OffsetCommit Response (Version: 0) => [responses]

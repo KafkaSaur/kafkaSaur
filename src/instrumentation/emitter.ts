@@ -2,7 +2,7 @@
 
 //import { EventEmitter } from 'events';
 //Deno Library import...
-import { EventEmitter } from 'https://deno.land/std@0.110.0/node/events.ts';
+import { EventEmitter } from 'https://deno.land/std@0.177.0/node/events.ts';
 
 import { InstrumentationEvent } from './event.ts';
 import { KafkaJSError } from '../errors.ts';

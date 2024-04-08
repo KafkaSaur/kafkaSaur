@@ -1,5 +1,5 @@
-import { EventEmitter } from "https://deno.land/std@0.110.0/node/events.ts";
-import { Buffer } from "https://deno.land/std@0.110.0/node/buffer.ts";
+import { EventEmitter } from "https://deno.land/std@0.177.0/node/events.ts";
+import { Buffer } from "https://deno.land/std@0.177.0/node/buffer.ts";
 import { iter } from "https://deno.land/std@0.110.0/io/util.ts";
 
 interface SslOptions {

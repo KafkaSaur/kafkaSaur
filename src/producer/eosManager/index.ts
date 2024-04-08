@@ -6,7 +6,7 @@ import { KafkaJSNonRetriableError } from '../../errors.ts';
 import COORDINATOR_TYPES from '../../protocol/coordinatorTypes.ts';
 import createStateMachine from './transactionStateMachine.ts';
 
-import { assert } from 'https://deno.land/std@0.110.0/testing/asserts.ts';
+import { assert } from 'https://deno.land/std@0.177.0/testing/asserts.ts';
 
 import STATES from './transactionStates.ts';
 const NO_PRODUCER_ID = -1;
