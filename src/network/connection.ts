@@ -363,7 +363,11 @@ export default class Connection {
             requestTimeout,
             sendRequest: async () => {
               this.logger.demo(`Sending request to broker...${requestInfo(request)}`)
-              await this.socket.write(requestPayload.buffer)
+              try {
+                await this.socket.write(requestPayload.buffer)
+              } catch (e) {
+                reject(e)
+              }
             },
           });
         } catch (e) {

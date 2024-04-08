@@ -58,8 +58,17 @@ export class CustomSocket extends EventEmitter {
   }
 
   async write(data: Buffer): Promise<number> {
-    const write = await this.conn?.write(data);
+    let write = 0;
+    try {
+      write = await this.conn?.write(data) || 0;
+    } catch (e) {
+      this.conn = undefined
+      this.isOpen = false
+      this.emit("error", this, e)
+      this.emit("close", this)
+      console.error("The broker has closed the connection - reconnecting")
+    }
 
-    return Promise.resolve(<number> write);
+    return write;
   }
 }
